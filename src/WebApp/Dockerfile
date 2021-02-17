@@ -27,4 +27,4 @@ WORKDIR /app
 
 # Copy content from Build image
 COPY --from=publish /app/publish .
-ENTRYPOINT ["/bin/init_container.sh", "dotnet", "WebApp.dll"]
+ENTRYPOINT ["dotnet", "WebApp.dll"]
