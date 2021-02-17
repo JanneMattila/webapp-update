@@ -14,8 +14,10 @@ stages:
       vmImage: ubuntu-16.04
     steps:
     - task: PowerShell@2
-      script:
-        echo $(Build.BuildNumber) > src/WebApp/wwwroot/release.txt
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo $(Build.BuildNumber) > src/WebApp/wwwroot/release.txt
     - task: Docker@2
       inputs:
         containerRegistry: 'DockerHub'
