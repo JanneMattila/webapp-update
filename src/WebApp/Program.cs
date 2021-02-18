@@ -6,10 +6,11 @@ namespace WebApp
 {
     public class Program
     {
-        public static DateTime Started = DateTime.UtcNow;
+        public static DateTime Started;
 
         public static void Main(string[] args)
         {
+            Started = DateTime.UtcNow;
             CreateHostBuilder(args).Build().Run();
         }
 
