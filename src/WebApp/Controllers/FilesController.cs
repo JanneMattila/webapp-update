@@ -2,30 +2,29 @@
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace WebApp.Controllers
+namespace WebApp.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class FilesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class FilesController : ControllerBase
+    private readonly ILogger<FilesController> _logger;
+
+    public FilesController(ILogger<FilesController> logger)
     {
-        private readonly ILogger<FilesController> _logger;
+        _logger = logger;
+    }
 
-        public FilesController(ILogger<FilesController> logger)
+    [HttpGet]
+    public async Task<string> Get()
+    {
+        var content = "No content";
+        const string exampleFile = "example.txt";
+
+        if (System.IO.File.Exists(exampleFile))
         {
-            _logger = logger;
+            content = await System.IO.File.ReadAllTextAsync(exampleFile);
         }
-
-        [HttpGet]
-        public async Task<string> Get()
-        {
-            var content = "No content";
-            const string exampleFile = "example.txt";
-
-            if (System.IO.File.Exists(exampleFile))
-            {
-                content = await System.IO.File.ReadAllTextAsync(exampleFile);
-            }
-            return content;
-        }
+        return content;
     }
 }
