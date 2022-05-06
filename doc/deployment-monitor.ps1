@@ -16,13 +16,15 @@ $ErrorActionPreference = "Stop"
 $previous = {}
 $previousVersion = Get-Date
 $message = "Starting"
+$machineName = "Unknown"
 For ($i = 0; $i -lt $Count; $i++) {
     $progressTime = (Get-Date) - $previousVersion
-    Write-Progress -Activity $message -Status "$Delay ms" -SecondsRemaining  $progressTime.TotalSeconds
+    Write-Progress -Activity $message -Status "$machineName, $Delay ms" -SecondsRemaining  $progressTime.TotalSeconds
 
     $startTime = Get-Date
     try {
         $response = Invoke-RestMethod -Method GET -Uri $Url -DisableKeepAlive -TimeoutSec 1
+        $machineName = $response.machineName
         if ($response.content -ne $previous.content) {
             "$($startTime): $($startTime - $previousVersion)"
             $response
