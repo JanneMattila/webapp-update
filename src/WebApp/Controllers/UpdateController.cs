@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace WebApp.Controllers;
@@ -10,21 +12,23 @@ namespace WebApp.Controllers;
 public class UpdateController : ControllerBase
 {
     private readonly ILogger<UpdateController> _logger;
+    private readonly IWebHostEnvironment _environment;
 
-    public UpdateController(ILogger<UpdateController> logger)
+    public UpdateController(ILogger<UpdateController> logger, IWebHostEnvironment environment)
     {
         _logger = logger;
+        _environment = environment;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
         var content = "No content";
-        const string exampleFile = "example.txt";
+        var releaseFile = Path.Join(_environment.WebRootPath, "release.txt");
 
-        if (System.IO.File.Exists(exampleFile))
+        if (System.IO.File.Exists(releaseFile))
         {
-            content = await System.IO.File.ReadAllTextAsync(exampleFile);
+            content = await System.IO.File.ReadAllTextAsync(releaseFile);
         }
         return new OkObjectResult(new
         {
